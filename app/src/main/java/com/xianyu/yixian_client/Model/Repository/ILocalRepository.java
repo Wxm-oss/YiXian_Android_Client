@@ -1,15 +1,19 @@
 package com.xianyu.yixian_client.Model.Repository;
 
-import com.xianyu.yixian_client.Model.Room.Entity.Simple_SkillCard;
+import com.xianyu.yixian_client.Model.Room.Entity.Buff;
+import com.xianyu.yixian_client.Model.Room.Entity.Friend;
+import com.xianyu.yixian_client.Model.Room.Entity.History;
+import com.xianyu.yixian_client.Model.Room.Entity.SkillCard;
 import com.xianyu.yixian_client.Model.Room.Entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
 
 /**
  * @ProjectName: YiXian_Client
- * @Package: com.xianyu.yixian_client.Model.Repository
+ * @Package: com.xianyu.yixian_client.Model.repository
  * @ClassName: ILocalRepository
  * @Description: java类作用描述
  * @Author: Jianxian
@@ -20,17 +24,23 @@ import io.reactivex.Single;
  * @Version: 1.0
  */
 interface ILocalRepository {
+
     public void insertUser(User user);
-
-    public Single<List<User>> queryUsers();
-
     public void deleteUser(User user);
-
     public void updateUser(User user);
+    public Single<List<User>> queryUserById(long id);
+    public Single<List<User>> queryAllUsers();
 
-    public void clearAllUser(User user);
 
-    public void insertSkillCard(Simple_SkillCard simple_skillCard);
+    public void insertFriend(Friend... friends);
+    public void deleteFriend(Friend... friends);
+    public void updateFriend(Friend... friends);
+    public Single<List<Friend>> queryFriend(long user_id);
 
-    public Single<List<Simple_SkillCard>> querySkillCard();
+    public void insertSkillCard(SkillCard... skillCards);
+    public void deleteSkillCard(SkillCard... skillCards);
+    public void updateSkillCard(SkillCard... skillCards);
+    public Single<List<SkillCard>> querySkillCardByAuthor(long user_id);
+    public Single<SkillCard> querySkillCardById(long id);
+    public Single<List<SkillCard>> queryAllSkillCards();
 }

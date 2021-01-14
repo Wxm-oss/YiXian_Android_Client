@@ -3,17 +3,13 @@ package com.xianyu.yixian_client.Repository;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.xianyu.yixian_client.Login.LoginViewModel;
-import com.xianyu.yixian_client.Model.Repository.RepositoryFactory;
+import com.xianyu.yixian_client.Model.Repository.Repository;
 
-import dagger.hilt.EntryPoint;
-import dagger.hilt.InstallIn;
-import dagger.hilt.android.EntryPointAccessors;
-import dagger.hilt.components.SingletonComponent;
+import javax.inject.Inject;
 
 /**
  * @ProjectName: YiXian_Client
- * @Package: com.xianyu.yixian_client.Repository
+ * @Package: com.xianyu.yixian_client.repository
  * @ClassName: RepositoryViewModel
  * @Description: java类作用描述
  * @Author: Jianxian
@@ -25,5 +21,9 @@ import dagger.hilt.components.SingletonComponent;
  */
 public class RepositoryViewModel extends ViewModel {
     MutableLiveData<String> message = new MutableLiveData<>();
-
+    Repository repository;
+    @Inject
+    public RepositoryViewModel(Repository repository){
+        this.repository = repository;
+    }
 }

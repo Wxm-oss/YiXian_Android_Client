@@ -3,16 +3,13 @@ package com.xianyu.yixian_client.Login;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.xianyu.yixian_client.Model.Repository.RepositoryFactory;
+import com.xianyu.yixian_client.Model.Repository.Repository;
 import com.xianyu.yixian_client.Model.Room.Entity.User;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.hilt.EntryPoint;
-import dagger.hilt.InstallIn;
-import dagger.hilt.components.SingletonComponent;
 import io.reactivex.Single;
 
 
@@ -31,39 +28,11 @@ import io.reactivex.Single;
 public class LoginViewModel extends ViewModel {
     public MutableLiveData<String> verificationCode = new MutableLiveData<String>();
     public MutableLiveData<String> surePassword = new MutableLiveData<String>();
-    public RepositoryFactory repositoryFactory;
-    @EntryPoint
-    @InstallIn(SingletonComponent.class)
-    interface ViewModelEntryPoint {
-         RepositoryFactory repositoryProvide();
+    public Repository repository;
+    @Inject
+    public LoginViewModel(Repository repository){
+        this.repository = repository;
     }
 
-    public void insertUser(User user){
-        repositoryFactory.insertUser(user);
-    }
-    public void deleteUser(User user){
-        repositoryFactory.deleteUser(user);
-    }
-    public void updateUser(User user){
-        repositoryFactory.updateUser(user);
-    }
-    public void clearAllUser(User user){
-        repositoryFactory.updateUser(user);
-    }
-    public Single<List<User>> query_Users(){
-       return repositoryFactory.queryUsers();
-    }
-    public LoginViewModel(RepositoryFactory repositoryFactory){
-        this.repositoryFactory = repositoryFactory;
-    }
-    public void ValidUser(User user){
-        repositoryFactory.ValidUser(user);
-    };
-    public void RegisterUser(User user){
-        repositoryFactory.RegisterUser(user);
-    }
-    public void ChangeUser(User user){
-        repositoryFactory.ChangeUser(user,verificationCode.getValue());
-    }
 }
 

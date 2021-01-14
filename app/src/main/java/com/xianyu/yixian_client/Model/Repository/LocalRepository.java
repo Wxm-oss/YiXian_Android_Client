@@ -1,8 +1,13 @@
 package com.xianyu.yixian_client.Model.Repository;
 
 import com.xianyu.yixian_client.Model.Room.DataBase_Room;
-import com.xianyu.yixian_client.Model.Room.Entity.Simple_SkillCard;
+import com.xianyu.yixian_client.Model.Room.Entity.Buff;
+import com.xianyu.yixian_client.Model.Room.Entity.Friend;
+import com.xianyu.yixian_client.Model.Room.Entity.History;
+import com.xianyu.yixian_client.Model.Room.Entity.SkillCard;
 import com.xianyu.yixian_client.Model.Room.Entity.User;
+
+import java.util.ArrayList;
 import java.util.List;
 import io.reactivex.Single;
 
@@ -45,17 +50,62 @@ public class LocalRepository implements ILocalRepository{
     }
 
     @Override
-    public void clearAllUser(User user) {
-       //**
+    public Single<List<User>> queryUserById(long id) {
+        return null;
     }
 
     @Override
-    public void insertSkillCard(Simple_SkillCard simple_skillCard) {
-        db.skillCardDao().insert(simple_skillCard);
+    public Single<List<User>> queryAllUsers() {
+        return null;
+    }
+
+
+    @Override
+    public void insertFriend(Friend... friends) {
+        db.friendDao().insert(friends);
     }
 
     @Override
-    public Single<List<Simple_SkillCard>> querySkillCard() {
-        return db.skillCardDao().query();
+    public void deleteFriend(Friend... friends) {
+        db.friendDao().delete(friends);
     }
+    @Override
+    public void updateFriend(Friend... friends) {
+        db.friendDao().update(friends);
+    }
+    @Override
+    public Single<List<Friend>> queryFriend(long user_id) {
+        return db.friendDao().query(user_id);
+    }
+
+    @Override
+    public void insertSkillCard(SkillCard... skillCards) {
+        db.skillCardDao().insert(skillCards);
+    }
+
+    @Override
+    public void deleteSkillCard(SkillCard... skillCards) {
+        db.skillCardDao().delete(skillCards);
+    }
+
+    @Override
+    public void updateSkillCard(SkillCard... skillCards) {
+        db.skillCardDao().update(skillCards);
+    }
+
+    @Override
+    public Single<List<SkillCard>> querySkillCardByAuthor(long user_id) {
+        return db.skillCardDao().queryByAuthorId(user_id);
+    }
+
+    @Override
+    public Single<SkillCard> querySkillCardById(long id) {
+        return db.skillCardDao().queryById(id);
+    }
+
+    @Override
+    public Single<List<SkillCard>> queryAllSkillCards() {
+        return db.skillCardDao().queryAllSkillCards();
+    }
+
 }
