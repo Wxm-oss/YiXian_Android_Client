@@ -39,10 +39,6 @@ public class XYApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Core.gson = new Gson().newBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                .excludeFieldsWithoutExposeAnnotation()
-                .create();
         try {
             init_data();
         } catch (InterruptedException e) {
@@ -55,7 +51,6 @@ public class XYApplication extends Application {
         User user;
         Friend friend;
         CardGroup cardGroup;
-        Date date = new Date();
         User owner = new User();
         owner.setNickName("涯丶");
         owner.setMoney(1234);
@@ -111,11 +106,9 @@ public class XYApplication extends Application {
         }
         repository.insertUser(owner);
 
-        for(int i=0;i<5;i++){
+        for(int i=1;i<5;i++){
             user = new User();
-            Thread.sleep(100);
-            date = new Date();
-            user.setId(date.getTime());
+            user.setId(i);
             user.setNickName("用户" + random.nextInt());
             user.setMoney(random.nextInt(1000));
             user.setExp(random.nextInt(200));
@@ -127,14 +120,12 @@ public class XYApplication extends Application {
             friend.setUser_1(owner.getId());
             friend.setUser_2(user.getId());
             repository.insertUser(user);
-            Thread.sleep(500);
+            Thread.sleep(200);
             repository.insertFriend(friend);
         }
-        for(int i=0;i<5;i++){
+        for(int i=5;i<10;i++){
             user = new User();
-            Thread.sleep(100);
-            date = new Date();
-            user.setId(date.getTime());
+            user.setId(i);
             user.setNickName("用户" + random.nextInt());
             user.setMoney(random.nextInt(1000));
             user.setExp(random.nextInt(200));
@@ -146,15 +137,13 @@ public class XYApplication extends Application {
             friend.setUser_1(owner.getId());
             friend.setUser_2(user.getId());
             repository.insertUser(user);
-            Thread.sleep(500);
+            Thread.sleep(200);
             repository.insertFriend(friend);
         }
-        for(int i=0;i<10;i++){
+        for(int i=10;i<15;i++){
             user = new User();
-            Thread.sleep(100);
-            date = new Date();
-            user.setId(date.getTime());
-            user.setNickName("用户" + random.nextInt());
+            user.setId(i);
+            user.setNickName("用户" + random.nextInt(30));
             user.setMoney(random.nextInt(1000));
             user.setExp(random.nextInt(200));
             user.setBattle_Count(random.nextInt(100));
@@ -165,10 +154,9 @@ public class XYApplication extends Application {
             friend.setUser_1(owner.getId());
             friend.setUser_2(user.getId());
             repository.insertUser(user);
-            Thread.sleep(500);
+            Thread.sleep(200);
             repository.insertFriend(friend);
         }
-
     }
     public String getRandomChineseString(int n)  {
         StringBuilder stringBuilder = new StringBuilder();

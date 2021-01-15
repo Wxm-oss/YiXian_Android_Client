@@ -1,11 +1,16 @@
 package com.xianyu.yixian_client.Model.Room.Entity;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import java.sql.Date;
+
+import com.google.gson.annotations.Expose;
 
 public class History {
+    @Expose
     int kills = 0;
+    @Expose
     boolean result = false;
+    int time = 0;
+    int battle = 0;
 
     public int getKills() {
         return kills;
@@ -14,6 +19,11 @@ public class History {
     public void setKills(int kills) {
         this.kills = kills;
     }
+
+    public int getTime(){ return time;}
+
+    public  int getBattle(){ return battle;}
+
 
     public boolean isResult() {
         return result;

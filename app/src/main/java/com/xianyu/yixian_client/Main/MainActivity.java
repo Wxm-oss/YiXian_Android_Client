@@ -1,32 +1,23 @@
 package com.xianyu.yixian_client.Main;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.xianyu.yixian_client.Core;
-import com.xianyu.yixian_client.Login.LoginService;
-import com.xianyu.yixian_client.Model.Room.Entity.User;
 import com.xianyu.yixian_client.R;
 import com.xianyu.yixian_client.databinding.MainActivityBinding;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 @AndroidEntryPoint
@@ -44,8 +35,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        Intent intentOne = new Intent(this, LoginService.class);
-        startService(intentOne);
+        //音频初始化
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.b);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
         //视频初始化
         VideoView videoView = findViewById(R.id.videoView_main);
         videoView.setVideoPath(Uri.parse("android.resource://" + getPackageName() + "/raw/" + R.raw.cg_bg).toString());//路径
@@ -71,11 +64,9 @@ public class MainActivity extends AppCompatActivity {
         viewModel.repository.queryUserById(123456)
                 .subscribeOn(Schedulers.io())//查询数据时的线程
                 .observeOn(AndroidSchedulers.mainThread())//数据查找完毕的线程
-                .subscribe(users -> {
-                    if(users.size()>0){
-                        Core.liveUser.setValue(users.get(0));
-                        text1.setText(Integer.toString(Core.liveUser.getValue().getExp()));
-                    }
+                .subscribe(user -> {
+                    Core.liveUser.setValue(user);
+                    text1.setText(Integer.toString(Core.liveUser.getValue().getExp()));
                 });
 
     }

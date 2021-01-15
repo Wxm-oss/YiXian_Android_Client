@@ -1,6 +1,7 @@
 package com.xianyu.yixian_client.Login;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.xianyu.yixian_client.Login.Fragment.Bind.DepthPageTransformer;
 import com.xianyu.yixian_client.Login.Fragment.Bind.Login_Fragment_Adapter;
 import com.xianyu.yixian_client.Core;
 import com.xianyu.yixian_client.Model.Log.Log.Tag;
+import com.xianyu.yixian_client.Model.Repository.Repository;
 import com.xianyu.yixian_client.Model.Room.Entity.User;
 import com.xianyu.yixian_client.Model.ShortCode.MessageDialog;
 import com.xianyu.yixian_client.R;
@@ -47,29 +49,30 @@ public class Login extends AppCompatActivity {
         Init();
     }
     private void Init(){
-        //Service初始化
-        Intent intentOne = new Intent(this, LoginService.class);
-        startService(intentOne);
+        viewModel.repository.queryUserById(123456)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(user -> Core.liveUser.setValue(user));
+        //音频初始化
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.b);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
         //视频初始化
         VideoView videoView = findViewById(R.id.back_ground);
         videoView.setVideoPath(Uri.parse("android.resource://" + getPackageName() + "/raw/" + R.raw.cg_bg).toString());
         videoView.setOnPreparedListener(mp -> mp.setLooping(true));
         videoView.start();
         //跳出主线程
-        Disposable temp = Observable.create(new ObservableOnSubscribe<LoginViewModel>() {
-            @Override
-            public void subscribe(@NonNull ObservableEmitter<LoginViewModel> emitter) {
-                //自定义注入
-                emitter.onNext(viewModel);
-                emitter.onComplete();
-            }
+        Disposable temp = Observable.create((ObservableOnSubscribe<LoginViewModel>) emitter -> {
+            //自定义注入
+            emitter.onNext(viewModel);
+            emitter.onComplete();
         }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(loginViewModel -> {
-            Log.d(Tag.Information,"监察者开始调用");
             viewModel = loginViewModel;
             //fragment绑定初始化
             paper = findViewById(R.id.paper);
             paper.setPageTransformer(new DepthPageTransformer());
-            paper.setAdapter(new Login_Fragment_Adapter(this,viewModel));
+            paper.setAdapter(new Login_Fragment_Adapter(this));
             tab = findViewById(R.id.tabLayout);
             tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
